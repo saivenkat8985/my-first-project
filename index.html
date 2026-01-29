@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Srikanth Onion Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+    header {
+      background: #8b0000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    section {
+      padding: 20px;
+    }
+    .product {
+      background: white;
+      max-width: 360px;
+      margin: auto;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .product img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .product input, .product select {
+      width: 95%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    .product button {
+      width: 100%;
+      padding: 10px;
+      background: #25d366;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .customers {
+      margin-top: 30px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    .note {
+      font-size: 14px;
+      color: #b00000;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🧅 Srikanth Onion Store</h1>
+  <p>Owner: Aduri Srikanth</p>
+</header>
+
+<section>
+  <div class="product">
+    <img src="https://source.unsplash.com/400x250/?onion" />
+    <h2>Fresh Red Onions</h2>
+    <p>₹30 per Kg</p>
+
+    <input type="number" id="qty" placeholder="Quantity (Kg)" />
+
+    <select id="line">
+      <option value="">Select Your Line</option>
+      <option>1st Line</option>
+      <option>2nd Line</option>
+      <option>3rd Line</option>
+      <option>4th Line</option>
+      <option>5th Line</option>
+      <option>6th Line</option>
+      <option>7th Line</option>
+      <option>8th Line</option>
+      <option>9th Line</option>
+      <option>10th Line</option>
+      <option>11th Line</option>
+    </select>
+
+    <p class="note">
+      🚚 Delivery only in:<br>
+      Guntur – Balaji Nagar – Mani Hotel Center (Lines 1 to 11)
+    </p>
+
+    <button onclick="orderOnion()">Order Now</button>
+  </div>
+</section>
+
+<section class="customers">
+  <h3>📦 Customer Orders (Owner Only)</h3>
+  <ul id="customerList"></ul>
+</section>
+
+<footer>
+  <p>📞 WhatsApp Orders: 6302609140</p>
+</footer>
+
+<script>
+(function () {
+  const OWNER_PHONE = "916302609140";
+  const STORAGE_KEY = "onion_customers";
+
+  const qtyInput = document.getElementById("qty");
+  const lineSelect = document.getElementById("line");
+  const customerList = document.getElementById("customerList");
+
+  let customers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  renderCustomers();
+
+  window.orderOnion = function () {
+    const qty = qtyInput.value;
+    const line = lineSelect.value;
+
+    if (!qty || qty <= 0) {
+      alert("Please enter valid quantity");
+      return;
+    }
+
+    if (!line) {
+      alert("Please select your line (1st to 11th)");
+      return;
+    }
+
+    const name = prompt("Enter your name:");
+    const phone = prompt("Enter your phone number:");
+    const address = prompt("Enter house address (Balaji Nagar):");
+
+    if (!name || !phone || !address) {
+      alert("All details are required");
+      return;
+    }
+
+    const order = {
+      name,
+      phone,
+      address,
+      line,
+      qty,
+      time: new Date().toLocaleString()
+    };
+
+    customers.push(order);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+    renderCustomers();
+
+    const message =
+`🧅 New Onion Order
+Name: ${name}
+Phone: ${phone}
+Qty: ${qty} Kg
+Area: Balaji Nagar
+Line: ${line}
+Address: ${address}`;
+
+    window.open(
+      `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+
+    qtyInput.value = "";
+    lineSelect.value = "";
+  };
+
+  function renderCustomers() {
+    customerList.innerHTML = customers.length === 0
+      ? "<li>No orders yet</li>"
+      : customers.map(
+          (c, i) =>
+            `<li>${i + 1}. ${c.name} | ${c.qty} Kg | ${c.line}</li>`
+        ).join("");
+  }
+})();
+</script>
+
+</body>
+</html>
