@@ -1,201 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Srikanth Onion Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Srikanth Onion Store | Aduri Onion Mart | Guntur</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
-    header {
-      background: #8b0000;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    section {
-      padding: 20px;
-    }
-    .product {
-      background: white;
-      max-width: 360px;
-      margin: auto;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .product img {
-      width: 100%;
-      border-radius: 8px;
-    }
-    .product input, .product select {
-      width: 95%;
-      padding: 8px;
-      margin: 8px 0;
-    }
-    .product button {
-      width: 100%;
-      padding: 10px;
-      background: #25d366;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .customers {
-      margin-top: 30px;
-      background: white;
-      padding: 15px;
-      border-radius: 8px;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      margin-top: 20px;
-    }
-    .note {
-      font-size: 14px;
-      color: #b00000;
-      margin-top: 8px;
-    }
-  </style>
+  <meta name="description" content="Srikanth Onion Store (Aduri Onion Mart) – Fresh red onions delivered in Guntur Balaji Nagar. Order onions via WhatsApp. Owner: Aduri Srikanth.">
+
+  <meta name="keywords" content="Srikanth Onion Store, Aduri Onion Mart, Onion Shop Guntur, Fresh Onions Guntur, Balaji Nagar Onion Delivery">
+
+  <meta name="author" content="Aduri Srikanth">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h1>🧅 Srikanth Onion Store</h1>
-  <p>Owner: Aduri Srikanth</p>
-</header>
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="container">
+  <h2>🔐 Login / Signup</h2>
+  <input type="text" id="name" placeholder="Enter Name">
+  <input type="email" id="email" placeholder="Enter Email">
+  <input type="password" id="password" placeholder="Set Password">
+  <button onclick="login()">Continue</button>
+</div>
 
-<section>
-  <div class="product">
-    <img src="https://source.unsplash.com/400x250/?onion" />
-    <h2>Fresh Red Onions</h2>
-    <p>₹30 per Kg</p>
+<!-- MAIN APP -->
+<div id="appScreen" class="hidden">
 
-    <input type="number" id="qty" placeholder="Quantity (Kg)" />
+  <header>
+    <h1>🧅 Aduri Onion Mart</h1>
+    <p>Owner: Aduri Srikanth</p>
+  </header>
 
-    <select id="line">
-      <option value="">Select Your Line</option>
-      <option>1st Line</option>
-      <option>2nd Line</option>
-      <option>3rd Line</option>
-      <option>4th Line</option>
-      <option>5th Line</option>
-      <option>6th Line</option>
-      <option>7th Line</option>
-      <option>8th Line</option>
-      <option>9th Line</option>
-      <option>10th Line</option>
-      <option>11th Line</option>
-    </select>
+  <div class="container">
+    <div class="product">
+      <img src="https://source.unsplash.com/400x250/?onion" alt="Onion">
+      <h3>Fresh Red Onions</h3>
+      <p>₹30 per Kg</p>
 
-    <p class="note">
-      🚚 Delivery only in:<br>
-      Guntur – Balaji Nagar – Mani Hotel Center (Lines 1 to 11)
-    </p>
+      <input type="number" id="qty" placeholder="Quantity (Kg)">
 
-    <button onclick="orderOnion()">Order Now</button>
+      <select id="line">
+        <option value="">Select Your Line</option>
+        <option>1st Line</option>
+        <option>2nd Line</option>
+        <option>3rd Line</option>
+        <option>4th Line</option>
+        <option>5th Line</option>
+        <option>6th Line</option>
+        <option>7th Line</option>
+        <option>8th Line</option>
+        <option>9th Line</option>
+        <option>10th Line</option>
+        <option>11th Line</option>
+      </select>
+
+      <button onclick="orderOnion()">Order Now</button>
+
+      <button class="install-btn" onclick="installApp()">📲 Install App</button>
+
+      <p class="note">
+        Delivery only: Guntur – Balaji Nagar – Mani Hotel Center (Lines 1–11)
+      </p>
+    </div>
+
+    <h3>📦 Customer Orders (Owner Only)</h3>
+    <ul id="customerList"></ul>
   </div>
-</section>
 
-<section class="customers">
-  <h3>📦 Customer Orders (Owner Only)</h3>
-  <ul id="customerList"></ul>
-</section>
+  <footer>
+    📞 WhatsApp Orders: 6302609140
+  </footer>
 
-<footer>
-  <p>📞 WhatsApp Orders: 6302609140</p>
-</footer>
+</div>
 
-<script>
-(function () {
-  const OWNER_PHONE = "916302609140";
-  const STORAGE_KEY = "onion_customers";
-
-  const qtyInput = document.getElementById("qty");
-  const lineSelect = document.getElementById("line");
-  const customerList = document.getElementById("customerList");
-
-  let customers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  renderCustomers();
-
-  window.orderOnion = function () {
-    const qty = qtyInput.value;
-    const line = lineSelect.value;
-
-    if (!qty || qty <= 0) {
-      alert("Please enter valid quantity");
-      return;
-    }
-
-    if (!line) {
-      alert("Please select your line (1st to 11th)");
-      return;
-    }
-
-    const name = prompt("Enter your name:");
-    const phone = prompt("Enter your phone number:");
-    const address = prompt("Enter house address (Balaji Nagar):");
-
-    if (!name || !phone || !address) {
-      alert("All details are required");
-      return;
-    }
-
-    const order = {
-      name,
-      phone,
-      address,
-      line,
-      qty,
-      time: new Date().toLocaleString()
-    };
-
-    customers.push(order);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
-    renderCustomers();
-
-    const message =
-`🧅 New Onion Order
-Name: ${name}
-Phone: ${phone}
-Qty: ${qty} Kg
-Area: Balaji Nagar
-Line: ${line}
-Address: ${address}`;
-
-    window.open(
-      `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(message)}`,
-      "_blank"
-    );
-
-    qtyInput.value = "";
-    lineSelect.value = "";
-  };
-
-  function renderCustomers() {
-    customerList.innerHTML = customers.length === 0
-      ? "<li>No orders yet</li>"
-      : customers.map(
-          (c, i) =>
-            `<li>${i + 1}. ${c.name} | ${c.qty} Kg | ${c.line}</li>`
-        ).join("");
-  }
-})();
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
